@@ -7,7 +7,9 @@ function App() {
   const [wilaya, setWilaya] = useState("");
   const [commune, setCommune] = useState("");
   const [daira, setDaira] = useState("");
- 
+ const submitHandler = () =>{
+ console.log(`wilaya  :  ${wilaya} , daira : ${daira} , commune : ${commune} `)
+ }
   const WilayaArray = [];
   WilayaArray[0] = null;
 
@@ -19,12 +21,13 @@ function App() {
 
   return (
     <>
-      <form>
-        <h1>enter your shipping informations </h1>
+        
+      <Form onSubmit={submitHandler}>
+        <h1>select your shipping informations </h1>
         <Form.Group>
-          <Form.Label>Enter your wilaya</Form.Label>
+          <Form.Label>Select your wilaya</Form.Label>
           <select value={wilaya} onChange={(e) => setWilaya(e.target.value)}>
-            <option>select wilaya</option>
+            <option>Select wilaya</option>
             {locationsData.map((e) => {
               if (!WilayaArray.includes(e.wilaya_name)) {
                 WilayaArray.push(e.wilaya_name);
@@ -39,7 +42,7 @@ function App() {
           </select>
           <br></br>
 
-          <Form.Label>Enter your daira</Form.Label>
+          <Form.Label>Select your daira</Form.Label>
 
           <select value={daira} onChange={(e) => setDaira(e.target.value)}>
             {locationsData.map((e) => {
@@ -52,34 +55,34 @@ function App() {
             })}
 
             {dairaArray.map((d, index) => {
-              if (index <= 1) {
-                return null;
-              }
-              return <option value={d}>{d}</option>;
+              return <option selected={daira} value={d}>{d}</option>;
             })}
-            {console.log(dairaArray)}
           </select>
           <br></br>
 
-          <Form.Label>Enter your commune </Form.Label>
+          <Form.Label>Selcet your commune </Form.Label>
           <select value={commune} onChange={(e) => setCommune(e.target.value)}>
             {locationsData.map((e) => {
               if (e.daira_name === daira) {
                 communeArray.push(e.commune_name);
               }
             })}
-
-            {communeArray.map((c, index) => {
-              if (index <= 1) {
-                return null;
-              }
-              return <option value={c}>{c}</option>;
+            {communeArray.map((c, index) => { 
+              return <option selected={commune} value={c}>{c}</option>;
             })}
-            {console.log(communeArray)}
           </select>
           <br></br>
+          {error ? (
+            <Alert variant="danger">
+              {" "}
+              please fill all of your information{" "}
+            </Alert>
+          ) : null}
+          <Button type="submit" variant="success" classwilaya="my-4">
+            porceed to payment
+          </Button>
         </Form.Group>
-      </form>
+      </Form>
     </>
   );
 }
